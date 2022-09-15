@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Types\" />
     <Folder Include="ObjectEditMetaConfig\" />
   </ItemGroup>
 

@@ -36,7 +36,7 @@ public partial class MudExPropertyEdit
         MethodInfo genericMethod = createFieldForExpression?.MakeGenericMethod(PropertyMeta.ComponentFieldType);
         return genericMethod?.Invoke(this, Array.Empty<object>()) ?? CreateFieldForExpression<string>();
     }
-    
+
     private object valueBackup;
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -54,7 +54,7 @@ public partial class MudExPropertyEdit
     private IDictionary<string, object> GetPreparedAttributes()
     {
         return PropertyMeta.RenderData
-            .InitValueBinding(PropertyMeta, RaisePropertyValueChanged) 
+            .InitValueBinding(PropertyMeta, RaisePropertyValueChanged)
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.For), CreateFieldForExpressionPropertyType())
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.Label), () => PropertyMeta.Settings.LabelFor(Localizer), PropertyMeta.Settings.LabelBehaviour == LabelBehaviour.Both || PropertyMeta.Settings.LabelBehaviour == LabelBehaviour.DefaultComponentLabeling)
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.HelperText), () => PropertyMeta.Settings.DescriptionFor(Localizer))
@@ -62,15 +62,15 @@ public partial class MudExPropertyEdit
             .TrySetAttributeIfAllowed(nameof(MudBaseInput<string>.ReadOnly), () => !PropertyMeta.Settings.IsEditable).Attributes;
     }
 
-    private Task RaisePropertyValueChanged() 
+    private Task RaisePropertyValueChanged()
         => PropertyValueChanged.InvokeAsync(PropertyMeta);
 
-    private PropertyResetSettings GetResetSettings() 
+    private PropertyResetSettings GetResetSettings()
         => PropertyMeta.Settings?.ResetSettings ?? (PropertyResetSettings ??= new PropertyResetSettings());
 
     protected void RenderAs(RenderTreeBuilder renderTreeBuilder, ObjectEditPropertyMeta meta)
         => meta.RenderData.CustomRenderer.Render(renderTreeBuilder, this, meta);
-    
+
     private async Task<object> GetBackupAsync(object value)
     {
         var t = PropertyMeta.PropertyInfo.PropertyType;
@@ -78,7 +78,7 @@ public partial class MudExPropertyEdit
             return GetDefault(t);
         if (t.IsValueType || t.IsPrimitive || t == typeof(string))
             return value;
-        
+
         return await value.MapToAsync(t);
     }
 
@@ -109,9 +109,9 @@ public partial class MudExPropertyEdit
 
     public void Invalidate() => StateHasChanged();
 
-    public object GetCurrentValue() 
+    public object GetCurrentValue()
         => editor.Instance?.GetType()?.GetProperty(PropertyMeta.RenderData.ValueField)?.GetValue(editor.Instance);
 
-    private string Title() 
+    private string Title()
         => ShowPathAsTitle ? PropertyMeta.PropertyName.Replace(".", " > ") : null;
 }
