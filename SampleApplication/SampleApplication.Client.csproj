@@ -14,16 +14,16 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.6" PrivateAssets="all" />
-    <PackageReference Include="MudBlazor" Version="6.0.15" />
-    <PackageReference Include="MudBlazor.Markdown" Version="0.0.12" />
+    <PackageReference Include="MudBlazor" Version="6.0.10" />
+    <PackageReference Include="MudBlazor.Markdown" Version="0.0.10" />
     <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.3" />
     <PackageReference Include="BlazorPrettyCode" Version="1.6.0" />
-    <PackageReference Include="MudBlazor.Extensions" Version="1.5.9" />
+    <!--<PackageReference Include="MudBlazor.Extensions" Version="1.5.9" />-->
   </ItemGroup>
 
-  <!--<ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\MudBlazor.Extensions\MudBlazor.Extensions.csproj" />
-  </ItemGroup>-->
+  </ItemGroup>
 
   <ItemGroup>
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
@@ -39,6 +39,10 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Shared\ProgrammingSkillSelect.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\MudEx - Web Deploy.pubxml.user" />
   </ItemGroup>
 
   <ItemGroup>

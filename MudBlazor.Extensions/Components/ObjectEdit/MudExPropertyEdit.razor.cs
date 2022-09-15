@@ -36,13 +36,13 @@ public partial class MudExPropertyEdit
         MethodInfo genericMethod = createFieldForExpression?.MakeGenericMethod(PropertyMeta.ComponentFieldType);
         return genericMethod?.Invoke(this, Array.Empty<object>()) ?? CreateFieldForExpression<string>();
     }
-
+    
     private object valueBackup;
-    protected override void OnAfterRender(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
-            valueBackup = GetBackup(PropertyMeta.Value);
-        base.OnAfterRender(firstRender);
+            valueBackup = await GetBackupAsync(PropertyMeta.Value);
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     protected override void OnInitialized()
@@ -71,7 +71,7 @@ public partial class MudExPropertyEdit
     protected void RenderAs(RenderTreeBuilder renderTreeBuilder, ObjectEditPropertyMeta meta)
         => meta.RenderData.CustomRenderer.Render(renderTreeBuilder, this, meta);
     
-    private object GetBackup(object value)
+    private async Task<object> GetBackupAsync(object value)
     {
         var t = PropertyMeta.PropertyInfo.PropertyType;
         if (value == null)
@@ -79,8 +79,7 @@ public partial class MudExPropertyEdit
         if (t.IsValueType || t.IsPrimitive || t == typeof(string))
             return value;
         
-        var res = value.MapTo(t);
-        return res;
+        return await value.MapToAsync(t);
     }
 
     private static object GetDefault(Type type)
@@ -95,15 +94,16 @@ public partial class MudExPropertyEdit
     public Task ResetAsync() => ClearOrResetAsync(true);
     public Task ClearAsync() => ClearOrResetAsync(false);
 
-    private Task ClearOrResetAsync(bool reset)
+    private async Task ClearOrResetAsync(bool reset)
     {
-        Check.TryCatch<Exception>(() =>
+        try
         {
             if (PropertyMeta.PropertyInfo.CanWrite)
-                PropertyMeta.Value = reset ? GetBackup(valueBackup) : PropertyMeta.RenderData.ConvertToPropertyValue(GetDefault(PropertyMeta.PropertyInfo.PropertyType));
-        });
+                PropertyMeta.Value = reset ? await GetBackupAsync(valueBackup) : PropertyMeta.RenderData.ConvertToPropertyValue(GetDefault(PropertyMeta.PropertyInfo.PropertyType));
+        }
+        catch
+        { }
         StateHasChanged();
-        return Task.CompletedTask;
     }
 
 
