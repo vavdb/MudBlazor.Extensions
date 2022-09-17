@@ -30,6 +30,7 @@ public static class RenderDataDefaults
         RegisterDefault<string, MudTextField<string>>(f => f.Value);
 
         RegisterDefault<int, MudNumericField<int>>(f => f.Value);
+        RegisterDefault<decimal, MudNumericField<decimal>>(f => f.Value);
         RegisterDefault<double, MudNumericField<double>>(f => f.Value);
         RegisterDefault<float, MudNumericField<float>>(f => f.Value);
 
@@ -61,6 +62,7 @@ public static class RenderDataDefaults
         });
 
         RegisterDefault<ICollection<string>, MudExCollectionEditor<string>>(f => f.Items);
+        RegisterDefault<CultureInfo, MudExCultureSelect>(s => s.Value);
     }
 
     private static Dictionary<string, object> ColorPickerOptions()
